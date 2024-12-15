@@ -36,23 +36,34 @@ uploadForm.addEventListener('submit', (event) => {
 // Mengambil daftar novel (opsional)
 function fetchNovels() {
   fetch('https://morally-nearby-penguin.ngrok-free.app/novels')
-    .then(response => response.json())
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
     .then(novels => {
+      console.log('Daftar novel:', novels);  // Menampilkan data novel yang diterima
       const novelList = document.getElementById('novelList');
       novelList.innerHTML = ''; // Kosongkan daftar sebelumnya
 
-      novels.forEach(novel => {
-        const novelItem = document.createElement('div');
-        novelItem.classList.add('novel-item');
-        novelItem.innerHTML = `
-          <h3>${novel.title}</h3>
-          <p>${novel.content.substring(0, 100)}...</p>
-        `;
-        novelList.appendChild(novelItem);
-      });
+      if (novels.length === 0) {
+        novelList.innerHTML = '<p>Belum ada novel yang diupload.</p>';
+      } else {
+        novels.forEach(novel => {
+          const novelItem = document.createElement('div');
+          novelItem.classList.add('novel-item');
+          novelItem.innerHTML = `
+            <h3>${novel.title}</h3>
+            <p>${novel.content.substring(0, 100)}...</p>
+          `;
+          novelList.appendChild(novelItem);
+        });
+      }
     })
     .catch(error => {
       console.error('Error fetching novels:', error);
+      alert('Gagal memuat daftar novel.');
     });
 }
 
