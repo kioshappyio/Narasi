@@ -1,4 +1,4 @@
-name: Get Novels
+name: Upload Novel
 
 on:
   workflow_dispatch: # Menjalankan workflow secara manual
@@ -7,20 +7,29 @@ on:
       - main
 
 jobs:
-  fetch_novels:
+  upload_novel:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Get list of novels
+      - name: Upload novel
         run: |
-          curl -H "Accept: application/vnd.github.v3+json" \
+          # Ambil input dari file atau variabel (misalnya dari formulir HTML)
+          # Misalkan kita sudah mengumpulkan input seperti nama novel dan kontennya
+          NOVEL_NAME="novel-example.md"
+          NOVEL_CONTENT="Isi novel di sini..."
+
+          # Encode konten menjadi base64
+          BASE64_CONTENT=$(echo -n "$NOVEL_CONTENT" | base64)
+
+          # Membuat file JSON untuk API GitHub
+          curl -X PUT \
                -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-               -X GET \
-               "https://api.github.com/repos/${{ github.repository }}/contents/novels" > novels.json
+               -H "Content-Type: application/json" \
+               -d "{\"message\": \"Upload novel baru: $NOVEL_NAME\", \"content\": \"$BASE64_CONTENT\"}" \
+               "https://api.github.com/repos/${{ github.repository }}/contents/novels/$NOVEL_NAME"
           
-      - name: Display results
-        run: |
-          cat novels.json
+      - name: Display successful upload message
+        run: echo "Novel uploaded successfully!"
