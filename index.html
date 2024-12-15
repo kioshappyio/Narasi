@@ -5,14 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Novel Platform</title>
 
-    <!-- Favicon - Menggunakan link gambar -->
+    <!-- Favicon dan Logo -->
     <link rel="icon" href="https://kioshappyio.github.io/Narasi/icon.png" type="image/x-icon">
-
-    <!-- Logo on the Header - Menggunakan link gambar -->
     <link rel="apple-touch-icon" href="https://kioshappyio.github.io/Narasi/icon.png">
     <meta name="theme-color" content="#007bff">
 
-    <!-- Bootstrap CSS -->
+    <!-- Bootstrap dan SweetAlert2 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.15/dist/sweetalert2.min.css" rel="stylesheet" />
 
@@ -71,12 +69,10 @@
             font-size: 1.1rem;
             color: #555;
         }
-        .form-control, .btn-custom {
-            font-size: 1rem;
-        }
         .form-control {
-            height: 60px;
+            height: 100px;
             border-radius: 10px;
+            width: 100%;
         }
         .btn-custom {
             background-color: #007bff;
@@ -114,7 +110,7 @@
             margin-bottom: 40px;
         }
         .header-logo img {
-            width: 150px; /* Adjust logo size */
+            width: 150px;
             height: auto;
         }
     </style>
@@ -122,7 +118,6 @@
 <body>
 
 <div class="container">
-    <!-- Header with logo -->
     <div class="header-logo">
         <img src="https://kioshappyio.github.io/Narasi/icon.png" alt="Website Logo">
     </div>
@@ -141,11 +136,6 @@
 
     <h2 class="mt-5">Published Novels</h2>
     <div id="novelList" class="novel-list">Loading novels...</div>
-
-    <div id="novelContent" class="novel-content frame">
-        <h2 id="novelTitle" class="mb-3"></h2>
-        <div id="novelBody" class="novel-body"></div>
-    </div>
 </div>
 
 <div class="footer">
@@ -163,14 +153,7 @@
         const content = document.getElementById('content').value;
 
         if (!title || !content) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Title and content are required.',
-                customClass: {
-                    popup: 'popup-error'
-                }
-            });
+            Swal.fire('Error', 'Title and content are required.', 'error');
             return;
         }
 
@@ -181,14 +164,7 @@
         });
 
         const result = await response.json();
-        Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: result.message,
-            customClass: {
-                popup: 'popup-success'
-            }
-        });
+        Swal.fire('Success', result.message, 'success');
         loadNovels();
     });
 
@@ -222,8 +198,15 @@
         const data = await response.json();
         const content = atob(data.content);
         const [title, ...body] = content.split('\n');
-        document.getElementById('novelTitle').textContent = title.replace('# ', '');
-        document.getElementById('novelBody').innerHTML = body.join('<br>');
+        
+        // Menampilkan isi novel dalam popup dengan ukuran lebih besar dan font kecil
+        Swal.fire({
+            title: title.replace('# ', ''),
+            html: `<div style="font-size: 0.9rem; line-height: 1.6;">${body.join('<br>')}</div>`,
+            confirmButtonText: 'Close',
+            width: '80%',
+            heightAuto: true,
+        });
     }
 
     loadNovels();
