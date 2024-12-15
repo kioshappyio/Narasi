@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Narasi - Upload dan Baca Novel</title>
+  <link rel="stylesheet" href="https://kioshappyio.github.com/Narasi/style.css">
+</head>
+<body>
+  <header>
+    <h1>Selamat datang di Narasi</h1>
+    <nav>
+      <ul>
+        <li><a href="#upload">Upload Novel</a></li>
+        <li><a href="#read">Baca Novel</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section id="upload">
+    <h2>Upload Novel</h2>
+    <form id="uploadForm">
+      <input type="text" id="title" placeholder="Judul Novel" required>
+      <textarea id="content" placeholder="Masukkan Isi Novel" required></textarea>
+      <button type="submit">Upload Novel</button>
+    </form>
+  </section>
+
+  <section id="read">
+    <h2>Baca Novel</h2>
+    <div id="novelList">
+      <!-- Daftar novel akan ditampilkan di sini -->
+    </div>
+  </section>
+
+  <script src="https://kioshappyio.github.com/Narasi/script.js"></script>
+</body>
+      </html>
