@@ -12,6 +12,8 @@
         button:hover { background-color: #45a049; }
         .novel-list { margin-top: 40px; }
         .novel-item { margin-bottom: 10px; }
+        .novel-item a { color: #4CAF50; text-decoration: none; }
+        .novel-item a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -36,6 +38,12 @@
 
         const title = document.getElementById('title').value;
         const content = document.getElementById('content').value;
+
+        // Validasi input sebelum mengirim
+        if (!title || !content) {
+            alert('Title and content are required.');
+            return;
+        }
 
         const response = await fetch(`${API_BASE}/save-novel`, {
             method: 'POST',
