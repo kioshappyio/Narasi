@@ -29,6 +29,11 @@
 <h2>Published Novels</h2>
 <div id="novelList" class="novel-list">Loading novels...</div>
 
+<div id="novelContent">
+    <h2 id="novelTitle"></h2>
+    <div id="novelBody"></div>
+</div>
+
 <script>
     const API_BASE = 'https://morally-nearby-penguin.ngrok-free.app'; // Ganti dengan URL ngrok Anda
 
@@ -58,21 +63,44 @@
         loadNovels(); // Refresh daftar novel
     });
 
-    // Memuat daftar novel yang dipublikasikan
+    // Memuat daftar novel yang dipublikasikan dari GitHub (file markdown)
     async function loadNovels() {
-        const response = await fetch(`${API_BASE}/novels`);
-        const novels = await response.json();
+        const url = 'https://api.github.com/repos/kioshappyio/Narasi/contents/';
+        const response = await fetch(url);
+        const data = await response.json();
 
-        // Pastikan file adalah markdown dan memiliki URL yang valid
+        const novels = data.filter(file => file.name.endsWith('.md')).map(file => {
+            return {
+                name: file.name.replace('.md', '').replace(/-/g, ' '),
+                url: file.download_url
+            };
+        });
+
         const novelList = novels.map(novel => 
-            `<div class="novel-item"><a href="${novel.url}" target="_blank">${novel.name}</a></div>`
+            `<div class="novel-item"><a href="#" onclick="loadNovelContent('${novel.url}')">${novel.name}</a></div>`
         ).join('');
 
         document.getElementById('novelList').innerHTML = novelList || 'No novels published yet.';
     }
 
+    // Memuat konten novel berdasarkan URL file markdown
+    async function loadNovelContent(url) {
+        const response = await fetch(url);
+        const markdownContent = await response.text();
+
+        // Mengubah markdown menjadi HTML
+        const htmlContent = marked(markdownContent); // Gunakan library markdown seperti 'marked'
+
+        // Menampilkan konten novel
+        document.getElementById('novelTitle').textContent = url.split('/').pop().replace('.md', '').replace(/-/g, ' ');
+        document.getElementById('novelBody').innerHTML = htmlContent;
+    }
+
     loadNovels(); // Memuat daftar novel saat halaman dimuat
 </script>
+
+<!-- Tambahkan library marked.js untuk mengonversi markdown menjadi HTML -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.12/marked.min.js"></script>
 
 </body>
 </html>
