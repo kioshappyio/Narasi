@@ -37,77 +37,43 @@
 <script>
     const API_BASE = 'https://morally-nearby-penguin.ngrok-free.app'; // Ganti dengan URL ngrok Anda
 
-    // Mengirim novel ke server
-    document.getElementById('novelForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const title = document.getElementById('title').value;
-        const content = document.getElementById('content').value;
-
-        // Validasi input sebelum mengirim
-        if (!title || !content) {
-            alert('Title and content are required.');
-            return;
-        }
-
-        const response = await fetch(`${API_BASE}/save-novel`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ title, content })
-        });
-
-        const result = await response.json();
-        alert(result.message);
-        loadNovels(); // Refresh daftar novel
-    });
-
-    // Memuat daftar novel yang dipublikasikan dari GitHub (file markdown)
+    // Memuat daftar novel dari GitHub
     async function loadNovels() {
         const url = 'https://api.github.com/repos/kioshappyio/Narasi/contents/';
         const response = await fetch(url);
         const data = await response.json();
 
-        // Filter dan ambil file markdown saja
-        const novels = data.filter(file => file.name.endsWith('.md')).map(file => {
-            return {
-                name: file.name.replace('.md', '').replace(/-/g, ' '),
-                url: file.download_url
-            };
+        data.forEach(file => {
+            if (file.name.endsWith('.md')) {
+                const title = file.name.replace('.md', '').replace(/-/g, ' ');
+                const link = document.createElement('a');
+                link.href = "#";
+                link.textContent = title;
+                link.classList.add('novel-item');
+                link.addEventListener('click', function () {
+                    loadNovelContent(file.name);
+                });
+                document.getElementById('novelList').appendChild(link);
+                document.getElementById('novelList').appendChild(document.createElement('br'));
+            }
         });
-
-        // Menampilkan daftar novel
-        const novelList = novels.map(novel => 
-            `<div class="novel-item"><a href="#" onclick="loadNovelContent('${novel.url}')">${novel.name}</a></div>`
-        ).join('');
-
-        document.getElementById('novelList').innerHTML = novelList || 'No novels published yet.';
     }
 
     // Memuat konten novel berdasarkan URL file markdown
-    async function loadNovelContent(url) {
+    async function loadNovelContent(fileName) {
+        const url = `https://api.github.com/repos/kioshappyio/Narasi/contents/${fileName}`;
         const response = await fetch(url);
-        const markdownContent = await response.text();
+        const data = await response.json();
+        const content = atob(data.content); // Decode base64 content
 
-        // Pastikan bahwa konten markdown berhasil diambil
-        if (markdownContent) {
-            // Mengonversi markdown menjadi HTML menggunakan library marked.js
-            const htmlContent = marked(markdownContent);
-
-            // Menampilkan konten novel
-            document.getElementById('novelTitle').textContent = url.split('/').pop().replace('.md', '').replace(/-/g, ' ');
-            document.getElementById('novelBody').innerHTML = htmlContent;
-        } else {
-            alert('Failed to load the novel content.');
-        }
+        // Memisahkan judul dan body dari konten markdown
+        const [title, ...body] = content.split('\n');
+        document.getElementById('novelTitle').textContent = title.replace('# ', ''); // Menghapus tanda #
+        document.getElementById('novelBody').innerHTML = body.join('<br>'); // Menampilkan konten dalam elemen
     }
 
-    loadNovels(); // Memuat daftar novel saat halaman dimuat
+    document.addEventListener('DOMContentLoaded', loadNovels);
 </script>
-
-<!-- Tambahkan library marked.js untuk mengonversi markdown menjadi HTML -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.12/marked.min.js"></script>
 
 </body>
 </html>
