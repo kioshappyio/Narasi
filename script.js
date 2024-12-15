@@ -5,21 +5,24 @@ const repoName = 'Narasi'; // Ganti dengan nama repositori Anda
 
 // Fungsi untuk mengambil novel dari repositori
 async function getNovels() {
-    const response = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/novels`, {
-        method: 'GET',
-        headers: {
-            'Authorization': `token ${token}`,
-            'Accept': 'application/vnd.github.v3+json'
+    try {
+        const response = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/novels`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `token ${token}`,
+                'Accept': 'application/vnd.github.v3+json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error("Gagal mengambil data novel: " + response.statusText);
         }
-    });
 
-    if (!response.ok) {
-        console.error("Gagal mengambil data novel:", response.statusText);
-        return;
+        const data = await response.json();
+        displayNovels(data);
+    } catch (error) {
+        console.error(error);
     }
-
-    const data = await response.json();
-    displayNovels(data);
 }
 
 // Fungsi untuk menampilkan daftar novel
@@ -50,27 +53,30 @@ function displayNovels(novels) {
 
 // Fungsi untuk membaca novel (fetch konten file)
 async function readNovel(filePath) {
-    const response = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`, {
-        method: 'GET',
-        headers: {
-            'Authorization': `token ${token}`,
-            'Accept': 'application/vnd.github.v3+json'
+    try {
+        const response = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `token ${token}`,
+                'Accept': 'application/vnd.github.v3+json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error("Gagal mengambil konten novel: " + response.statusText);
         }
-    });
 
-    if (!response.ok) {
-        console.error("Gagal mengambil konten novel:", response.statusText);
-        return;
+        const data = await response.json();
+        const content = atob(data.content);  // Meng-decode dari base64
+        Swal.fire({
+            title: 'Novel Lengkap',
+            text: content,
+            icon: 'info',
+            confirmButtonText: 'Tutup'
+        });
+    } catch (error) {
+        console.error(error);
     }
-
-    const data = await response.json();
-    const content = atob(data.content);  // Meng-decode dari base64
-    Swal.fire({
-        title: 'Novel Lengkap',
-        text: content,
-        icon: 'info',
-        confirmButtonText: 'Tutup'
-    });
 }
 
 // Fungsi untuk meng-upload novel baru
@@ -92,36 +98,35 @@ async function uploadNovel(event) {
     const fileName = `${title.replace(/\s+/g, '_')}.md`;
     const fileContent = btoa(content); // Encode konten novel ke base64
 
-    const response = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/novels/${fileName}`, {
-        method: 'PUT',
-        headers: {
-            'Authorization': `token ${token}`,
-            'Accept': 'application/vnd.github.v3+json'
-        },
-        body: JSON.stringify({
-            message: `Upload novel ${title}`,
-            content: fileContent
-        })
-    });
-
-    if (!response.ok) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Gagal meng-upload novel!',
-            text: response.statusText,
+    try {
+        const response = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/novels/${fileName}`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `token ${token}`,
+                'Accept': 'application/vnd.github.v3+json'
+            },
+            body: JSON.stringify({
+                message: `Upload novel ${title}`,
+                content: fileContent
+            })
         });
-        return;
+
+        if (!response.ok) {
+            throw new Error("Gagal meng-upload novel: " + response.statusText);
+        }
+
+        Swal.fire({
+            icon: 'success',
+            title: 'Novel berhasil di-upload!',
+            text: `Novel "${title}" telah berhasil di-upload.`,
+        });
+
+        // Reset form dan perbarui daftar novel
+        document.getElementById("uploadForm").reset();
+        getNovels();  // Memperbarui daftar novel
+    } catch (error) {
+        console.error(error);
     }
-
-    Swal.fire({
-        icon: 'success',
-        title: 'Novel berhasil di-upload!',
-        text: `Novel "${title}" telah berhasil di-upload.`,
-    });
-
-    // Reset form dan perbarui daftar novel
-    document.getElementById("uploadForm").reset();
-    getNovels();  // Memperbarui daftar novel
 }
 
 // Event listener untuk form upload
