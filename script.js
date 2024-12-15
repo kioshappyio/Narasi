@@ -1,11 +1,20 @@
-document.getElementById('uploadForm').addEventListener('submit', function(event) {
+// Mengambil elemen-elemen yang dibutuhkan
+const uploadForm = document.getElementById('uploadForm');
+const titleInput = document.getElementById('title');
+const contentInput = document.getElementById('content');
+
+// URL backend Ngrok
+const backendUrl = 'https://morally-nearby-penguin.ngrok-free.app/upload';
+
+// Menangani pengiriman form
+uploadForm.addEventListener('submit', (event) => {
   event.preventDefault();
 
-  const title = document.getElementById('title').value;
-  const content = document.getElementById('content').value;
+  const title = titleInput.value;
+  const content = contentInput.value;
 
-  // Kirim data novel ke backend
-  fetch('http://localhost:3000/upload', {
+  // Mengirim data novel ke backend
+  fetch(backendUrl, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -15,8 +24,8 @@ document.getElementById('uploadForm').addEventListener('submit', function(event)
   .then(response => response.json())
   .then(data => {
     alert('Novel berhasil diupload!');
-    document.getElementById('title').value = '';
-    document.getElementById('content').value = '';
+    titleInput.value = '';
+    contentInput.value = '';
   })
   .catch(error => {
     console.error('Error:', error);
@@ -24,11 +33,28 @@ document.getElementById('uploadForm').addEventListener('submit', function(event)
   });
 });
 
-// Mengambil daftar novel untuk ditampilkan
-fetch('http://localhost:3000/novels')
-  .then(response => response.json())
-  .then(data => {
-    const novelList = document.getElementById('novelList');
-    novelList.innerHTML = data.map(novel => `<div><h3>${novel.title}</h3><p>${novel.content}</p></div>`).join('');
-  })
-  .catch(error => console.error('Error:', error));
+// Mengambil daftar novel (opsional)
+function fetchNovels() {
+  fetch('https://morally-nearby-penguin.ngrok-free.app/novels')
+    .then(response => response.json())
+    .then(novels => {
+      const novelList = document.getElementById('novelList');
+      novelList.innerHTML = ''; // Kosongkan daftar sebelumnya
+
+      novels.forEach(novel => {
+        const novelItem = document.createElement('div');
+        novelItem.classList.add('novel-item');
+        novelItem.innerHTML = `
+          <h3>${novel.title}</h3>
+          <p>${novel.content.substring(0, 100)}...</p>
+        `;
+        novelList.appendChild(novelItem);
+      });
+    })
+    .catch(error => {
+      console.error('Error fetching novels:', error);
+    });
+}
+
+// Panggil fungsi untuk mengambil daftar novel saat halaman dimuat
+window.onload = fetchNovels;
