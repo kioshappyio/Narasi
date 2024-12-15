@@ -1,5 +1,3 @@
-// Personal Access Token Anda
-const token = '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'; // Ganti dengan token baru yang telah Anda buat
 const repoOwner = 'kioshappyio'; // Ganti dengan nama pengguna GitHub Anda
 const repoName = 'Narasi'; // Ganti dengan nama repositori Anda
 
@@ -9,7 +7,6 @@ async function getNovels() {
         const response = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/novels`, {
             method: 'GET',
             headers: {
-                'Authorization': `token ${token}`,
                 'Accept': 'application/vnd.github.v3+json'
             }
         });
@@ -57,7 +54,6 @@ async function readNovel(filePath) {
         const response = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`, {
             method: 'GET',
             headers: {
-                'Authorization': `token ${token}`,
                 'Accept': 'application/vnd.github.v3+json'
             }
         });
@@ -78,59 +74,6 @@ async function readNovel(filePath) {
         console.error(error);
     }
 }
-
-// Fungsi untuk meng-upload novel baru
-async function uploadNovel(event) {
-    event.preventDefault();
-
-    const title = document.getElementById("title").value;
-    const content = document.getElementById("content").value;
-
-    if (title.trim() === "" || content.trim() === "") {
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Judul dan Isi Novel wajib diisi!',
-        });
-        return;
-    }
-
-    const fileName = `${title.replace(/\s+/g, '_')}.md`;
-    const fileContent = btoa(content); // Encode konten novel ke base64
-
-    try {
-        const response = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/novels/${fileName}`, {
-            method: 'PUT',
-            headers: {
-                'Authorization': `token ${token}`,
-                'Accept': 'application/vnd.github.v3+json'
-            },
-            body: JSON.stringify({
-                message: `Upload novel ${title}`,
-                content: fileContent
-            })
-        });
-
-        if (!response.ok) {
-            throw new Error("Gagal meng-upload novel: " + response.statusText);
-        }
-
-        Swal.fire({
-            icon: 'success',
-            title: 'Novel berhasil di-upload!',
-            text: `Novel "${title}" telah berhasil di-upload.`,
-        });
-
-        // Reset form dan perbarui daftar novel
-        document.getElementById("uploadForm").reset();
-        getNovels();  // Memperbarui daftar novel
-    } catch (error) {
-        console.error(error);
-    }
-}
-
-// Event listener untuk form upload
-document.getElementById("uploadForm").addEventListener("submit", uploadNovel);
 
 // Panggil getNovels untuk menampilkan daftar novel pertama kali
 getNovels();
