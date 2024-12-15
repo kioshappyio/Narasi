@@ -1,3 +1,5 @@
+Di Ujung Waktu
+
 Di sebuah desa kecil yang terletak di pinggiran hutan, hidup seorang pemuda bernama Arga. Setiap pagi, dia berkeliling desa, menawarkan jasa pertukangan kayu. Namun, hatinya selalu merasa kosong. Dia merasa ada sesuatu yang hilang, sesuatu yang tak bisa dia temukan di antara deretan kayu yang ia ukir.
 
 Suatu sore, ketika langit mulai berwarna jingga, Arga mendengar suara aneh dari dalam hutan. Suara itu mengalun lembut, seolah mengundangnya untuk datang lebih dekat. Tanpa berpikir panjang, Arga mengikuti suara tersebut hingga tiba di sebuah telaga kecil yang tersembunyi di balik pepohonan lebat.
