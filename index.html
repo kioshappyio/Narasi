@@ -63,6 +63,7 @@
         const response = await fetch(`${API_BASE}/novels`);
         const novels = await response.json();
 
+        // Pastikan file adalah markdown dan memiliki URL yang valid
         const novelList = novels.map(novel => 
             `<div class="novel-item"><a href="${novel.url}" target="_blank">${novel.name}</a></div>`
         ).join('');
