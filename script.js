@@ -15,13 +15,19 @@ async function getNovels() {
         });
 
         if (!response.ok) {
-            throw new Error("Gagal mengambil data novel: " + response.statusText);
+            const errorData = await response.json();
+            throw new Error("Gagal mengambil data novel: " + errorData.message);
         }
 
         const data = await response.json();
         displayNovels(data);
     } catch (error) {
-        console.error(error);
+        console.error("Error: ", error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal mengambil daftar novel!',
+            text: error.message,
+        });
     }
 }
 
@@ -63,7 +69,8 @@ async function readNovel(filePath) {
         });
 
         if (!response.ok) {
-            throw new Error("Gagal mengambil konten novel: " + response.statusText);
+            const errorData = await response.json();
+            throw new Error("Gagal mengambil konten novel: " + errorData.message);
         }
 
         const data = await response.json();
@@ -75,7 +82,12 @@ async function readNovel(filePath) {
             confirmButtonText: 'Tutup'
         });
     } catch (error) {
-        console.error(error);
+        console.error("Error: ", error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal membaca novel!',
+            text: error.message,
+        });
     }
 }
 
@@ -112,7 +124,8 @@ async function uploadNovel(event) {
         });
 
         if (!response.ok) {
-            throw new Error("Gagal meng-upload novel: " + response.statusText);
+            const errorData = await response.json();
+            throw new Error("Gagal meng-upload novel: " + errorData.message);
         }
 
         Swal.fire({
@@ -125,7 +138,12 @@ async function uploadNovel(event) {
         document.getElementById("uploadForm").reset();
         getNovels();  // Memperbarui daftar novel
     } catch (error) {
-        console.error(error);
+        console.error("Error: ", error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal Meng-upload Novel!',
+            text: error.message,
+        });
     }
 }
 
