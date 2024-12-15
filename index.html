@@ -3,60 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Novel Reader</title>
+    <title>Novel Platform</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            padding: 0;
-        }
-        h1 {
-            color: #333;
-        }
-        form, div {
-            margin-bottom: 20px;
-        }
+        body { font-family: Arial, sans-serif; margin: 20px; padding: 0; }
+        h1 { color: #333; }
+        textarea { width: 100%; height: 300px; margin-bottom: 20px; }
+        button { padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #45a049; }
+        .novel-list { margin-top: 40px; }
+        .novel-item { margin-bottom: 10px; }
     </style>
 </head>
 <body>
-    <h1>Upload and Read Novels</h1>
-    <form id="uploadForm" enctype="multipart/form-data">
-        <input type="file" name="novel" accept=".md" required />
-        <button type="submit">Upload Novel</button>
-    </form>
-    <div id="novelList">
-        <h2>Available Novels</h2>
-        <p>Loading novels...</p>
-    </div>
 
-    <script>
-        const API_BASE = 'https://morally-nearby-penguin.ngrok-free.app';  // URL ngrok
+<h1>Publish Your Novel</h1>
 
-        // Handle upload form
-        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const formData = new FormData(e.target);
-            const response = await fetch(`${API_BASE}/upload`, {
-                method: 'POST',
-                body: formData,
-            });
-            const result = await response.json();
-            alert(result.message);
-            loadNovels(); // Refresh novel list
+<form id="novelForm">
+    <input type="text" id="title" placeholder="Enter novel title" required /><br><br>
+    <textarea id="content" placeholder="Write your novel here" required></textarea><br><br>
+    <button type="submit">Publish Novel</button>
+</form>
+
+<h2>Published Novels</h2>
+<div id="novelList" class="novel-list">Loading novels...</div>
+
+<script>
+    const API_BASE = 'https://morally-nearby-penguin.ngrok-free.app'; // Ganti dengan URL ngrok Anda
+
+    // Mengirim novel ke server
+    document.getElementById('novelForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const title = document.getElementById('title').value;
+        const content = document.getElementById('content').value;
+
+        const response = await fetch(`${API_BASE}/save-novel`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ title, content })
         });
 
-        // Load novel list
-        async function loadNovels() {
-            const response = await fetch(`${API_BASE}/novels`);
-            const novels = await response.json();
-            const list = novels.map(
-                (novel) =>
-                    `<a href="${API_BASE}/uploads/${novel}" target="_blank">${novel}</a><br>`
-            );
-            document.getElementById('novelList').innerHTML = list.join('');
-        }
+        const result = await response.json();
+        alert(result.message);
+        loadNovels(); // Refresh daftar novel
+    });
 
-        loadNovels(); // Initial load
-    </script>
+    // Memuat daftar novel yang dipublikasikan
+    async function loadNovels() {
+        const response = await fetch(`${API_BASE}/novels`);
+        const novels = await response.json();
+
+        const novelList = novels.map(novel => 
+            `<div class="novel-item"><a href="${novel.url}" target="_blank">${novel.name}</a></div>`
+        ).join('');
+
+        document.getElementById('novelList').innerHTML = novelList || 'No novels published yet.';
+    }
+
+    loadNovels(); // Memuat daftar novel saat halaman dimuat
+</script>
+
 </body>
 </html>
