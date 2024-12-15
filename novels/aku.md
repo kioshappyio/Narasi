@@ -1,4 +1,4 @@
-Judul: "Rindu yang Tersisa"
+# Judul: "Rindu yang Tersisa"
 
 Di sebuah kota kecil yang terletak di antara perbukitan hijau, hiduplah seorang pemuda bernama Raka. Ia adalah seorang pelukis yang telah lama kehilangan semangat hidup setelah kepergian kekasihnya, Sari, yang meninggal akibat kecelakaan beberapa tahun lalu. Setiap hari, Raka duduk di depan kanvas kosong, mencari inspirasi yang tak kunjung datang.
 
