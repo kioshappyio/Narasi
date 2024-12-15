@@ -1,38 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Narasi - Upload dan Baca Novel</title>
-  <link rel="stylesheet" href="https://kioshappyio.github.io/Narasi/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novel Reader</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+        }
+        h1 {
+            color: #333;
+        }
+        form, div {
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>Selamat datang di Narasi</h1>
-    <nav>
-      <ul>
-        <li><a href="#upload">Upload Novel</a></li>
-        <li><a href="#read">Baca Novel</a></li>
-      </ul>
-    </nav>
-  </header>
-
-  <section id="upload">
-    <h2>Upload Novel</h2>
-    <form id="uploadForm">
-      <input type="text" id="title" placeholder="Judul Novel" required>
-      <textarea id="content" placeholder="Masukkan Isi Novel" required></textarea>
-      <button type="submit">Upload Novel</button>
+    <h1>Upload and Read Novels</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" name="novel" accept=".md" required />
+        <button type="submit">Upload Novel</button>
     </form>
-  </section>
-
-  <section id="read">
-    <h2>Baca Novel</h2>
     <div id="novelList">
-      <!-- Daftar novel akan ditampilkan di sini -->
+        <h2>Available Novels</h2>
+        <p>Loading novels...</p>
     </div>
-  </section>
 
-  <script src="https://kioshappyio.github.io/Narasi/script.js"></script>
+    <script>
+        const API_BASE = 'https://morally-nearby-penguin.ngrok-free.app';  // URL ngrok
+
+        // Handle upload form
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const response = await fetch(`${API_BASE}/upload`, {
+                method: 'POST',
+                body: formData,
+            });
+            const result = await response.json();
+            alert(result.message);
+            loadNovels(); // Refresh novel list
+        });
+
+        // Load novel list
+        async function loadNovels() {
+            const response = await fetch(`${API_BASE}/novels`);
+            const novels = await response.json();
+            const list = novels.map(
+                (novel) =>
+                    `<a href="${API_BASE}/uploads/${novel}" target="_blank">${novel}</a><br>`
+            );
+            document.getElementById('novelList').innerHTML = list.join('');
+        }
+
+        loadNovels(); // Initial load
+    </script>
 </body>
 </html>
