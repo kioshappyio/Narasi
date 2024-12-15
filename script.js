@@ -1,5 +1,5 @@
 // Personal Access Token Anda
-const token = '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'; // Ganti dengan token Anda
+const token = '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'; // Ganti dengan token baru yang telah Anda buat
 const repoOwner = 'kioshappyio'; // Ganti dengan nama pengguna GitHub Anda
 const repoName = 'Narasi'; // Ganti dengan nama repositori Anda
 
@@ -15,19 +15,13 @@ async function getNovels() {
         });
 
         if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error("Gagal mengambil data novel: " + errorData.message);
+            throw new Error("Gagal mengambil data novel: " + response.statusText);
         }
 
         const data = await response.json();
         displayNovels(data);
     } catch (error) {
-        console.error("Error: ", error);
-        Swal.fire({
-            icon: 'error',
-            title: 'Gagal mengambil daftar novel!',
-            text: error.message,
-        });
+        console.error(error);
     }
 }
 
@@ -69,8 +63,7 @@ async function readNovel(filePath) {
         });
 
         if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error("Gagal mengambil konten novel: " + errorData.message);
+            throw new Error("Gagal mengambil konten novel: " + response.statusText);
         }
 
         const data = await response.json();
@@ -82,12 +75,7 @@ async function readNovel(filePath) {
             confirmButtonText: 'Tutup'
         });
     } catch (error) {
-        console.error("Error: ", error);
-        Swal.fire({
-            icon: 'error',
-            title: 'Gagal membaca novel!',
-            text: error.message,
-        });
+        console.error(error);
     }
 }
 
@@ -124,8 +112,7 @@ async function uploadNovel(event) {
         });
 
         if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error("Gagal meng-upload novel: " + errorData.message);
+            throw new Error("Gagal meng-upload novel: " + response.statusText);
         }
 
         Swal.fire({
@@ -138,12 +125,7 @@ async function uploadNovel(event) {
         document.getElementById("uploadForm").reset();
         getNovels();  // Memperbarui daftar novel
     } catch (error) {
-        console.error("Error: ", error);
-        Swal.fire({
-            icon: 'error',
-            title: 'Gagal Meng-upload Novel!',
-            text: error.message,
-        });
+        console.error(error);
     }
 }
 
