@@ -14,6 +14,8 @@
         .novel-item { margin-bottom: 10px; }
         .novel-item a { color: #4CAF50; text-decoration: none; }
         .novel-item a:hover { text-decoration: underline; }
+        #novelContent { margin-top: 40px; }
+        #novelBody { margin-top: 20px; }
     </style>
 </head>
 <body>
@@ -29,6 +31,7 @@
 <h2>Published Novels</h2>
 <div id="novelList" class="novel-list">Loading novels...</div>
 
+<h2>Novel Content</h2>
 <div id="novelContent">
     <h2 id="novelTitle"></h2>
     <div id="novelBody"></div>
@@ -37,12 +40,39 @@
 <script>
     const API_BASE = 'https://morally-nearby-penguin.ngrok-free.app'; // Ganti dengan URL ngrok Anda
 
+    // Mengirim novel ke server
+    document.getElementById('novelForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const title = document.getElementById('title').value;
+        const content = document.getElementById('content').value;
+
+        // Validasi input sebelum mengirim
+        if (!title || !content) {
+            alert('Title and content are required.');
+            return;
+        }
+
+        const response = await fetch(`${API_BASE}/save-novel`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ title, content })
+        });
+
+        const result = await response.json();
+        alert(result.message);
+        loadNovels(); // Refresh daftar novel
+    });
+
     // Memuat daftar novel dari GitHub
     async function loadNovels() {
         const url = 'https://api.github.com/repos/kioshappyio/Narasi/contents/';
         const response = await fetch(url);
         const data = await response.json();
 
+        // Memproses setiap file markdown
         data.forEach(file => {
             if (file.name.endsWith('.md')) {
                 const title = file.name.replace('.md', '').replace(/-/g, ' ');
@@ -51,7 +81,7 @@
                 link.textContent = title;
                 link.classList.add('novel-item');
                 link.addEventListener('click', function () {
-                    loadNovelContent(file.name);
+                    loadNovelContent(file.name); // Memuat konten novel saat tautan diklik
                 });
                 document.getElementById('novelList').appendChild(link);
                 document.getElementById('novelList').appendChild(document.createElement('br'));
@@ -72,7 +102,7 @@
         document.getElementById('novelBody').innerHTML = body.join('<br>'); // Menampilkan konten dalam elemen
     }
 
-    document.addEventListener('DOMContentLoaded', loadNovels);
+    loadNovels(); // Memuat daftar novel saat halaman dimuat
 </script>
 
 </body>
