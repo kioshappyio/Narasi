@@ -1,5 +1,5 @@
 // Personal Access Token Anda
-const token = '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'; // Ganti dengan token baru yang telah Anda buat
+const token = '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'; // Ganti dengan token baru yang telah Anda buat
 const repoOwner = 'kioshappyio'; // Ganti dengan nama pengguna GitHub Anda
 const repoName = 'Narasi'; // Ganti dengan nama repositori Anda
 
