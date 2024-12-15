@@ -4,220 +4,216 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Novel Platform</title>
-    <!-- Menyertakan Bootstrap dan SweetAlert -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEJ1QK3pP4xI8qS+H4iV0Xy9IoVq7lFhnn5ZZV10oG1jM2JJ7k8lb6FjquV9a" crossorigin="anonymous">
-    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css" rel="stylesheet">
+
+    <!-- Favicon - Menggunakan link gambar -->
+    <link rel="icon" href="https://kioshappyio.github.io/Narasi/icon.png" type="image/x-icon">
+
+    <!-- Logo on the Header - Menggunakan link gambar -->
+    <link rel="apple-touch-icon" href="https://kioshappyio.github.io/Narasi/icon.png">
+    <meta name="theme-color" content="#007bff">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.15/dist/sweetalert2.min.css" rel="stylesheet" />
+
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f7fc;
+            background-color: #f4f7f6;
+            padding: 40px 15px;
+            color: #333;
         }
         h1, h2 {
-            color: #343a40;
+            font-weight: 600;
         }
         .container {
-            margin-top: 40px;
+            max-width: 960px;
+            margin: 0 auto;
         }
         .novel-list {
             margin-top: 40px;
+            display: grid;
+            gap: 15px;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
         }
         .novel-item {
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            padding: 20px;
             background-color: #fff;
-            margin-bottom: 10px;
-            cursor: pointer;
+            border-radius: 10px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         .novel-item:hover {
-            background-color: #f1f1f1;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
-        #novelContent {
+        .novel-item a {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 1.25rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        .novel-item a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+        .novel-content {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
             margin-top: 40px;
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            max-width: 800px;
-            margin: 0 auto;
         }
-        #novelTitle {
-            font-size: 2.5rem;
-            color: #2c3e50;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        #novelBody {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: #555;
+        .novel-body {
             white-space: pre-wrap;
-            word-wrap: break-word;
+            line-height: 1.7;
+            font-size: 1.1rem;
+            color: #555;
         }
-        #novelBody p {
-            margin-bottom: 1.5rem;
+        .form-control, .btn-custom {
+            font-size: 1rem;
         }
-        .btn-read-more {
-            margin-top: 20px;
-            display: block;
-            text-align: center;
-            width: 100%;
-            padding: 12px;
-            font-size: 1.2rem;
-            background-color: #3498db;
+        .form-control {
+            height: 60px;
+            border-radius: 10px;
+        }
+        .btn-custom {
+            background-color: #007bff;
             color: white;
             border: none;
-            border-radius: 5px;
-            cursor: pointer;
+            padding: 14px;
+            width: 100%;
+            font-size: 1.2rem;
+            border-radius: 10px;
+            transition: background-color 0.3s;
         }
-        .btn-read-more:hover {
-            background-color: #2980b9;
+        .btn-custom:hover {
+            background-color: #0056b3;
         }
-        .novel-navigation {
-            margin-top: 20px;
+        .frame {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #ffffff;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+        .footer {
+            background-color: #f1f1f1;
             text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: #777;
         }
-        .novel-navigation a {
-            color: #3498db;
-            font-size: 1.1rem;
-            margin: 0 15px;
-            text-decoration: none;
+        .header-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 40px;
         }
-        .novel-navigation a:hover {
-            text-decoration: underline;
+        .header-logo img {
+            width: 150px; /* Adjust logo size */
+            height: auto;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1 class="text-center">Publish Your Novel</h1>
+    <!-- Header with logo -->
+    <div class="header-logo">
+        <img src="https://kioshappyio.github.io/Narasi/icon.png" alt="Website Logo">
+    </div>
 
-    <form id="novelForm" class="mb-5">
-        <input type="text" id="title" class="form-control mb-3" placeholder="Enter novel title" required />
-        <textarea id="content" class="form-control mb-3" placeholder="Write your novel here" rows="5" required></textarea>
-        <button type="submit" class="btn btn-success">Publish Novel</button>
+    <h1 class="text-center mb-4">Publish Your Novel</h1>
+
+    <form id="novelForm">
+        <div class="mb-4">
+            <input type="text" id="title" class="form-control" placeholder="Enter novel title" required />
+        </div>
+        <div class="mb-4">
+            <textarea id="content" class="form-control" rows="5" placeholder="Write your novel here" required></textarea>
+        </div>
+        <button type="submit" class="btn-custom" id="publishButton">Publish Novel</button>
     </form>
 
-    <h2>Published Novels</h2>
+    <h2 class="mt-5">Published Novels</h2>
     <div id="novelList" class="novel-list">Loading novels...</div>
 
-    <div id="novelContent">
-        <h2 id="novelTitle"></h2>
-        <div id="novelBody"></div>
-        <div class="novel-navigation">
-            <a href="#prev" id="prevNovel">Previous</a>
-            <a href="#next" id="nextNovel">Next</a>
-        </div>
+    <div id="novelContent" class="novel-content frame">
+        <h2 id="novelTitle" class="mb-3"></h2>
+        <div id="novelBody" class="novel-body"></div>
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.all.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<div class="footer">
+    <p>&copy; 2024 Narasi Novel - All rights reserved</p>
+</div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.15/dist/sweetalert2.all.min.js"></script>
 <script>
-    const API_BASE = 'https://morally-nearby-penguin.ngrok-free.app'; // Ganti dengan URL ngrok Anda
+    const API_BASE = 'https://morally-nearby-penguin.ngrok-free.app';
 
-    // Mengirim novel ke server
     document.getElementById('novelForm').addEventListener('submit', async (e) => {
         e.preventDefault();
 
         const title = document.getElementById('title').value;
         const content = document.getElementById('content').value;
 
-        // Validasi input sebelum mengirim
         if (!title || !content) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Title and content are required!'
-            });
+            Swal.fire('Error', 'Title and content are required.', 'error');
             return;
         }
 
         const response = await fetch(`${API_BASE}/save-novel`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ title, content })
         });
 
         const result = await response.json();
-        Swal.fire({
-            icon: 'success',
-            title: result.message,
-            showConfirmButton: false,
-            timer: 1500
-        });
-
-        loadNovels(); // Refresh daftar novel
+        Swal.fire('Success', result.message, 'success');
+        loadNovels();
     });
 
-    // Memuat daftar novel dari GitHub
     async function loadNovels() {
         const url = 'https://api.github.com/repos/kioshappyio/Narasi/contents/';
         const response = await fetch(url);
         const data = await response.json();
 
-        const novelList = data.map(file => {
+        document.getElementById('novelList').innerHTML = '';
+        data.forEach(file => {
             if (file.name.endsWith('.md')) {
                 const title = file.name.replace('.md', '').replace(/-/g, ' ');
-                return `<div class="novel-item" onclick="loadNovelContent('${file.name}')">${title}</div>`;
+                const link = document.createElement('a');
+                link.href = "#";
+                link.textContent = title;
+                link.classList.add('novel-item');
+                link.addEventListener('click', function () {
+                    loadNovelContent(file.name);
+                });
+                const div = document.createElement('div');
+                div.classList.add('novel-item');
+                div.appendChild(link);
+                document.getElementById('novelList').appendChild(div);
             }
-        }).join('');
-
-        document.getElementById('novelList').innerHTML = novelList || 'No novels published yet.';
+        });
     }
-
-    // Memuat konten novel berdasarkan URL file markdown
-    let currentNovelIndex = 0;
-    let novelsData = [];
 
     async function loadNovelContent(fileName) {
         const url = `https://api.github.com/repos/kioshappyio/Narasi/contents/${fileName}`;
         const response = await fetch(url);
         const data = await response.json();
-        const content = atob(data.content); // Decode base64 content
-
-        // Memisahkan judul dan body dari konten markdown
+        const content = atob(data.content);
         const [title, ...body] = content.split('\n');
-        document.getElementById('novelTitle').textContent = title.replace('# ', ''); // Menghapus tanda #
-        document.getElementById('novelBody').innerHTML = body.join('<br>'); // Menampilkan konten dalam elemen
-
-        // Menyimpan data novel
-        novelsData.push({ fileName, title });
-        currentNovelIndex = novelsData.length - 1;
-
-        // Menampilkan tombol navigasi
-        updateNavigation();
+        document.getElementById('novelTitle').textContent = title.replace('# ', '');
+        document.getElementById('novelBody').innerHTML = body.join('<br>');
     }
 
-    // Navigasi novel
-    function updateNavigation() {
-        const prevButton = document.getElementById('prevNovel');
-        const nextButton = document.getElementById('nextNovel');
-
-        if (currentNovelIndex === 0) {
-            prevButton.style.display = 'none';
-        } else {
-            prevButton.style.display = 'inline-block';
-        }
-
-        if (currentNovelIndex === novelsData.length - 1) {
-            nextButton.style.display = 'none';
-        } else {
-            nextButton.style.display = 'inline-block';
-        }
-
-        prevButton.onclick = () => loadNovelContent(novelsData[currentNovelIndex - 1].fileName);
-        nextButton.onclick = () => loadNovelContent(novelsData[currentNovelIndex + 1].fileName);
-    }
-
-    loadNovels(); // Memuat daftar novel saat halaman dimuat
+    loadNovels();
 </script>
 
 </body>
-            </html>
+    </html>
