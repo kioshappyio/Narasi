@@ -1,1 +1,0 @@
-akuu lahh akuuu
