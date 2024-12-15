@@ -69,6 +69,7 @@
         const response = await fetch(url);
         const data = await response.json();
 
+        // Filter dan ambil file markdown saja
         const novels = data.filter(file => file.name.endsWith('.md')).map(file => {
             return {
                 name: file.name.replace('.md', '').replace(/-/g, ' '),
@@ -76,6 +77,7 @@
             };
         });
 
+        // Menampilkan daftar novel
         const novelList = novels.map(novel => 
             `<div class="novel-item"><a href="#" onclick="loadNovelContent('${novel.url}')">${novel.name}</a></div>`
         ).join('');
@@ -88,12 +90,17 @@
         const response = await fetch(url);
         const markdownContent = await response.text();
 
-        // Mengubah markdown menjadi HTML menggunakan library marked.js
-        const htmlContent = marked(markdownContent);
+        // Pastikan bahwa konten markdown berhasil diambil
+        if (markdownContent) {
+            // Mengonversi markdown menjadi HTML menggunakan library marked.js
+            const htmlContent = marked(markdownContent);
 
-        // Menampilkan konten novel
-        document.getElementById('novelTitle').textContent = url.split('/').pop().replace('.md', '').replace(/-/g, ' ');
-        document.getElementById('novelBody').innerHTML = htmlContent;
+            // Menampilkan konten novel
+            document.getElementById('novelTitle').textContent = url.split('/').pop().replace('.md', '').replace(/-/g, ' ');
+            document.getElementById('novelBody').innerHTML = htmlContent;
+        } else {
+            alert('Failed to load the novel content.');
+        }
     }
 
     loadNovels(); // Memuat daftar novel saat halaman dimuat
