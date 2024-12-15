@@ -198,10 +198,10 @@
         const data = await response.json();
         const content = atob(data.content);
         const [title, ...body] = content.split('\n');
-        
-        // Menampilkan isi novel dalam popup dengan ukuran lebih besar dan font kecil
+
+        // Menampilkan isi novel dalam popup dengan judul yang jelas dan isi cerita terpisah
         Swal.fire({
-            title: title.replace('# ', ''),
+            title: `<strong>${title.replace('# ', '')}</strong>`,
             html: `<div style="font-size: 0.9rem; line-height: 1.6; font-weight: normal;">${body.join('<br>')}</div>`,
             confirmButtonText: 'Close',
             width: '80%',
@@ -213,4 +213,4 @@
 </script>
 
 </body>
-            </html>
+</html>
