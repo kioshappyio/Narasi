@@ -88,8 +88,8 @@
         const response = await fetch(url);
         const markdownContent = await response.text();
 
-        // Mengubah markdown menjadi HTML
-        const htmlContent = marked(markdownContent); // Gunakan library markdown seperti 'marked'
+        // Mengubah markdown menjadi HTML menggunakan library marked.js
+        const htmlContent = marked(markdownContent);
 
         // Menampilkan konten novel
         document.getElementById('novelTitle').textContent = url.split('/').pop().replace('.md', '').replace(/-/g, ' ');
