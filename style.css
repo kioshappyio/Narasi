@@ -21,6 +21,38 @@ h1, h2 {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 }
 
+/* Kategori Judul */
+.category-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #007bff;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 5px;
+}
+
+/* Chapter List */
+.chapter-list {
+    margin-top: 10px;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.chapter-item {
+    font-size: 1rem;
+    color: #333;
+    padding: 5px 0;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.chapter-item:hover {
+    text-decoration: underline;
+    color: #007bff;
+}
+
 .novel-item {
     padding: 20px;
     background-color: #fff;
@@ -111,4 +143,4 @@ h1, h2 {
 .header-logo img {
     width: 150px;
     height: auto;
-  }
+}
