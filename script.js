@@ -64,11 +64,16 @@ async function loadCategories() {
 
 // Fungsi untuk memuat isi chapter
 async function loadChapterContent(category, chapter) {
-    const url = `https://api.github.com/repos/kioshappyio/Narasi/contents/${category}/${chapter}.md`;
+    // Ganti URL untuk mendapatkan file mentah (raw) dari GitHub
+    const url = `https://raw.githubusercontent.com/kioshappyio/Narasi/main/${category}/${chapter}.md`;
     const response = await fetch(url);
-    const data = await response.json();
+    
+    if (!response.ok) {
+        Swal.fire('Error', 'Chapter not found.', 'error');
+        return;
+    }
 
-    const content = atob(data.content);
+    const content = await response.text();
     const [title, ...body] = content.split('\n');
 
     // Tampilkan isi chapter dalam popup
