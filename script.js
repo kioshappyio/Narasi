@@ -34,19 +34,18 @@ document.getElementById('novelForm').addEventListener('submit', async (e) => {
 async function loadCategories() {
     const response = await fetch(`${API_BASE}/categories`);
     const data = await response.json();
+    console.log(data); // Debugging untuk memeriksa data yang diterima
 
     const novelList = document.getElementById('novelList');
     novelList.innerHTML = ''; // Kosongkan daftar
 
     data.forEach(category => {
-        // Buat elemen kategori
         const categoryDiv = document.createElement('div');
         categoryDiv.classList.add('category-item');
         const categoryTitle = document.createElement('h3');
         categoryTitle.textContent = category.name.replace(/-/g, ' ');
         categoryDiv.appendChild(categoryTitle);
 
-        // Tambahkan chapter ke dalam kategori
         category.chapters.forEach(chapter => {
             const chapterLink = document.createElement('a');
             chapterLink.href = "#";
