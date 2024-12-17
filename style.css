@@ -21,24 +21,6 @@ h1, h2 {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 }
 
-/* Kategori dan Chapter */
-.novel-category {
-    font-size: 1.25rem;
-    font-weight: bold;
-    color: #007bff;
-    margin-bottom: 10px;
-    border-bottom: 2px solid #007bff;
-    padding-bottom: 5px;
-}
-
-.chapter-title {
-    font-size: 1.1rem;
-    font-weight: 500;
-    color: #333;
-    margin-top: 5px;
-    margin-bottom: 10px;
-}
-
 .novel-item {
     padding: 20px;
     background-color: #fff;
@@ -55,7 +37,7 @@ h1, h2 {
 .novel-item a {
     color: #007bff;
     text-decoration: none;
-    font-size: 1rem;
+    font-size: 1.25rem;
     font-weight: 500;
     transition: color 0.3s ease;
 }
@@ -81,10 +63,9 @@ h1, h2 {
 }
 
 .form-control {
+    height: 100px;
     border-radius: 10px;
     width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
 }
 
 .btn-custom {
@@ -130,4 +111,4 @@ h1, h2 {
 .header-logo img {
     width: 150px;
     height: auto;
-    }
+}
