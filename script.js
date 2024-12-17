@@ -64,8 +64,10 @@ async function loadCategories() {
 
 // Fungsi untuk memuat isi chapter
 async function loadChapterContent(category, chapter) {
-    // Ganti URL untuk mendapatkan file mentah (raw) dari GitHub
+    // Debugging: Tampilkan URL yang akan digunakan
     const url = `https://raw.githubusercontent.com/kioshappyio/Narasi/main/${category}/${chapter}.md`;
+    console.log('Loading chapter from URL:', url); // Debugging
+
     const response = await fetch(url);
     
     if (!response.ok) {
