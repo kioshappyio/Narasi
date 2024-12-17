@@ -24,18 +24,23 @@
         <img src="https://kioshappyio.github.io/Narasi/icon.png" alt="Website Logo">
     </div>
 
-    <h1 class="text-center mb-4">Publish Novel Karya Kamu Secara Gratis Di Narasi Novels</h1>
+    <h1 class="text-center mb-4">Publish Novel Karya Kamu Secara Gratis di Narasi Novels</h1>
 
+    <!-- Form untuk menambah kategori dan chapter -->
     <form id="novelForm">
-        <div class="mb-4">
-            <input type="text" id="title" class="form-control" placeholder="Contoh: Hari Ini Chapter1" required />
+        <div class="mb-3">
+            <input type="text" id="category" class="form-control" placeholder="Masukan kategori (Contoh: Hantu Pohon Pisang)" required />
+        </div>
+        <div class="mb-3">
+            <input type="text" id="chapter" class="form-control" placeholder="Masukan judul chapter (Contoh: Chapter 1)" required />
         </div>
         <div class="mb-4">
-            <textarea id="content" class="form-control" rows="5" placeholder="Masukan judul di paragraf pertama, lalu masukan isi novel." required></textarea>
+            <textarea id="content" class="form-control" rows="5" placeholder="Masukan isi cerita untuk chapter ini." required></textarea>
         </div>
-        <button type="submit" class="btn-custom" id="publishButton">Upload Novel</button>
+        <button type="submit" class="btn-custom" id="publishButton">Upload Chapter</button>
     </form>
 
+    <!-- Daftar novel -->
     <h2 class="mt-5">Kumpulan Novel</h2>
     <div id="novelList" class="novel-list">Loading Novel...</div>
 </div>
@@ -49,4 +54,4 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.15/dist/sweetalert2.all.min.js"></script>
 
 </body>
-</html>
+    </html>
