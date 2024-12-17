@@ -1,3 +1,0 @@
-aku tau
-
-ini isinyaaaaaaaa
