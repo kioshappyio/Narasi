@@ -1,59 +1,77 @@
 const API_BASE = 'https://morally-nearby-penguin.ngrok-free.app';
 
+// Event listener untuk form pengisian chapter
 document.getElementById('novelForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const title = document.getElementById('title').value;
+    const category = document.getElementById('category').value;
+    const chapter = document.getElementById('chapter').value;
     const content = document.getElementById('content').value;
 
-    if (!title || !content) {
-        Swal.fire('Error', 'Title and content are required.', 'error');
+    if (!category || !chapter || !content) {
+        Swal.fire('Error', 'Category, chapter, and content are required.', 'error');
         return;
     }
 
-    const response = await fetch(`${API_BASE}/save-novel`, {
+    // Kirim permintaan ke backend
+    const response = await fetch(`${API_BASE}/save-chapter`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, content })
+        body: JSON.stringify({ category, chapter, content }),
     });
 
     const result = await response.json();
-    Swal.fire('Success', result.message, 'success');
-    loadNovels();
+
+    if (response.ok) {
+        Swal.fire('Success', result.message, 'success');
+        loadCategories();
+    } else {
+        Swal.fire('Error', result.message || 'Failed to save the chapter.', 'error');
+    }
 });
 
-async function loadNovels() {
-    const url = 'https://api.github.com/repos/kioshappyio/Narasi/contents/';
-    const response = await fetch(url);
+// Fungsi untuk memuat kategori dan chapter
+async function loadCategories() {
+    const response = await fetch(`${API_BASE}/categories`);
     const data = await response.json();
 
-    document.getElementById('novelList').innerHTML = '';
-    data.forEach(file => {
-        if (file.name.endsWith('.md')) {
-            const title = file.name.replace('.md', '').replace(/-/g, ' ');
-            const link = document.createElement('a');
-            link.href = "#";
-            link.textContent = title;
-            link.classList.add('novel-item');
-            link.addEventListener('click', function () {
-                loadNovelContent(file.name);
-            });
-            const div = document.createElement('div');
-            div.classList.add('novel-item');
-            div.appendChild(link);
-            document.getElementById('novelList').appendChild(div);
-        }
+    const novelList = document.getElementById('novelList');
+    novelList.innerHTML = ''; // Kosongkan daftar
+
+    data.forEach(category => {
+        // Buat elemen kategori
+        const categoryDiv = document.createElement('div');
+        categoryDiv.classList.add('category-item');
+        const categoryTitle = document.createElement('h3');
+        categoryTitle.textContent = category.name.replace(/-/g, ' ');
+        categoryDiv.appendChild(categoryTitle);
+
+        // Tambahkan chapter ke dalam kategori
+        category.chapters.forEach(chapter => {
+            const chapterLink = document.createElement('a');
+            chapterLink.href = "#";
+            chapterLink.textContent = chapter.name.replace(/-/g, ' ');
+            chapterLink.classList.add('chapter-item');
+            chapterLink.addEventListener('click', () => loadChapterContent(category.name, chapter.name));
+            const chapterDiv = document.createElement('div');
+            chapterDiv.appendChild(chapterLink);
+            categoryDiv.appendChild(chapterDiv);
+        });
+
+        novelList.appendChild(categoryDiv);
     });
 }
 
-async function loadNovelContent(fileName) {
-    const url = `https://api.github.com/repos/kioshappyio/Narasi/contents/${fileName}`;
+// Fungsi untuk memuat isi chapter
+async function loadChapterContent(category, chapter) {
+    const url = `https://api.github.com/repos/kioshappyio/Narasi/contents/${category}/${chapter}.md`;
     const response = await fetch(url);
     const data = await response.json();
+
     const content = atob(data.content);
     const [title, ...body] = content.split('\n');
 
-    // Menampilkan isi novel dalam popup dengan judul yang jelas dan isi cerita terpisah
+    // Tampilkan isi chapter dalam popup
     Swal.fire({
         title: `<strong>${title.replace('# ', '')}</strong>`,
         html: `<div style="font-size: 0.9rem; line-height: 1.6; font-weight: normal;">${body.join('<br>')}</div>`,
@@ -63,4 +81,5 @@ async function loadNovelContent(fileName) {
     });
 }
 
-loadNovels();
+// Panggil fungsi untuk memuat kategori dan chapter saat halaman dimuat
+loadCategories();
