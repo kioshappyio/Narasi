@@ -1,5 +1,6 @@
 const API_BASE = 'https://morally-nearby-penguin.ngrok-free.app';
 
+// Menghandle Form Submit untuk upload novel
 document.getElementById('novelForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -22,6 +23,7 @@ document.getElementById('novelForm').addEventListener('submit', async (e) => {
     loadNovels();
 });
 
+// Load Folder dan File Novel
 async function loadNovels(path = '') {
     const baseUrl = 'https://api.github.com/repos/kioshappyio/Narasi/contents/';
     const url = `${baseUrl}${path}`;
@@ -31,24 +33,33 @@ async function loadNovels(path = '') {
     const novelList = document.getElementById('novelList');
     novelList.innerHTML = '';
 
+    if (!data || data.length === 0) {
+        novelList.innerHTML = 'No novels found.';
+        return;
+    }
+
     data.forEach(item => {
         if (item.type === 'dir') {
+            // Folder: tampilkan sebagai kategori
             const folderDiv = document.createElement('div');
-            folderDiv.classList.add('novel-item');
+            folderDiv.classList.add('folder-item');
             folderDiv.textContent = item.name;
 
+            // Ketika folder diklik, load isi folder
             folderDiv.addEventListener('click', () => {
                 loadNovels(`${path}${item.name}/`);
             });
 
             novelList.appendChild(folderDiv);
         } else if (item.name.endsWith('.md')) {
+            // File markdown: tampilkan sebagai chapter
             const title = item.name.replace('.md', '').replace(/-/g, ' ');
             const link = document.createElement('a');
             link.href = "#";
             link.textContent = title;
             link.classList.add('novel-item');
 
+            // Ketika file diklik, load konten novel
             link.addEventListener('click', () => {
                 loadNovelContent(`${path}${item.name}`);
             });
@@ -61,6 +72,7 @@ async function loadNovels(path = '') {
     });
 }
 
+// Menampilkan konten novel ketika diklik
 async function loadNovelContent(filePath) {
     const url = `https://api.github.com/repos/kioshappyio/Narasi/contents/${filePath}`;
     const response = await fetch(url);
@@ -70,12 +82,14 @@ async function loadNovelContent(filePath) {
 
     Swal.fire({
         title: `<strong>${title.replace('# ', '')}</strong>`,
-        html: `<p>${body.join('<br/>')}</p>`,
-        confirmButtonText: 'Close'
+        html: `<div style="font-size: 0.9rem; line-height: 1.6; font-weight: normal;">${body.join('<br>')}</div>`,
+        confirmButtonText: 'Close',
+        width: '80%',
+        heightAuto: true,
     });
 }
 
-// Memuat daftar novel pada saat pertama kali halaman dimuat
+// Memulai dengan folder root
 window.onload = () => {
     loadNovels();
 };
