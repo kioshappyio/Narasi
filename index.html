@@ -20,11 +20,15 @@
 <body>
 
 <div class="container">
-    <div class="header-logo">
+    <!-- Logo dan Header -->
+    <div class="header-logo text-center mb-4">
         <img src="https://kioshappyio.github.io/Narasi/icon.png" alt="Website Logo">
     </div>
 
     <h1 class="text-center mb-4">Publish Novel Karya Kamu Secara Gratis Di Narasi Novels</h1>
+
+    <!-- Breadcrumb Navigation -->
+    <div id="breadcrumb" class="breadcrumb mb-4"></div>
 
     <!-- Form untuk upload novel -->
     <form id="novelForm">
@@ -34,7 +38,7 @@
         <div class="mb-4">
             <textarea id="content" class="form-control" rows="5" placeholder="Masukan judul di paragraf pertama, lalu masukan isi novel." required></textarea>
         </div>
-        <button type="submit" class="btn-custom" id="publishButton">Upload Novel</button>
+        <button type="submit" class="btn btn-primary" id="publishButton">Upload Novel</button>
     </form>
 
     <!-- Daftar novel -->
@@ -42,7 +46,8 @@
     <div id="novelList" class="novel-list">Loading Novel...</div>
 </div>
 
-<div class="footer">
+<!-- Footer -->
+<div class="footer text-center mt-5">
     <p>&copy; 2024 Narasi Novel - All rights reserved</p>
 </div>
 
@@ -51,4 +56,4 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.15/dist/sweetalert2.all.min.js"></script>
 
 </body>
-</html>
+        </html>
