@@ -1,3 +1,0 @@
-ini lah isinya
-
-pppppppppppp
