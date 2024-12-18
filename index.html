@@ -26,20 +26,39 @@
 
     <h1 class="text-center mb-4">Publish Novel Karya Kamu Secara Gratis Di Narasi Novels</h1>
 
-    <!-- Form untuk upload novel -->
     <form id="novelForm">
+        <!-- Input Judul Novel -->
         <div class="mb-4">
             <input type="text" id="title" class="form-control" placeholder="Contoh: Hari Ini Chapter1" required />
         </div>
+
+        <!-- Input Kategori Novel -->
         <div class="mb-4">
-            <textarea id="content" class="form-control" rows="5" placeholder="Masukkan judul di paragraf pertama, lalu masukkan isi novel." required></textarea>
+            <select id="category" class="form-control" required>
+                <option value="">Pilih Kategori</option>
+                <option value="Romantis">Romantis</option>
+                <option value="Petualangan">Petualangan</option>
+                <option value="Fiksi Ilmiah">Fiksi Ilmiah</option>
+                <option value="Horor">Horor</option>
+                <!-- Tambahkan kategori lain sesuai kebutuhan -->
+            </select>
         </div>
-        <button type="submit" class="btn btn-primary" id="publishButton">Upload Novel</button>
+
+        <!-- Input Chapter Novel -->
+        <div class="mb-4">
+            <input type="number" id="chapter" class="form-control" placeholder="Nomor Chapter" required min="1" />
+        </div>
+
+        <!-- Input Konten Novel -->
+        <div class="mb-4">
+            <textarea id="content" class="form-control" rows="5" placeholder="Masukan judul di paragraf pertama, lalu masukan isi novel." required></textarea>
+        </div>
+
+        <button type="submit" class="btn-custom" id="publishButton">Upload Novel</button>
     </form>
 
-    <!-- Daftar chapter (folder) -->
-    <h2 id="folderTitle" class="mt-5">Kumpulan Chapter Novel</h2>
-    <div id="novelList" class="novel-list">Loading Chapter...</div>
+    <h2 class="mt-5">Kumpulan Novel</h2>
+    <div id="novelList" class="novel-list">Loading Novel...</div>
 </div>
 
 <div class="footer">
@@ -51,4 +70,4 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.15/dist/sweetalert2.all.min.js"></script>
 
 </body>
-    </html>
+        </html>
