@@ -4,25 +4,30 @@ const API_BASE = 'https://morally-nearby-penguin.ngrok-free.app';
 document.getElementById('novelForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const title = document.getElementById('title').value;
-    const content = document.getElementById('content').value;
-    const category = document.getElementById('category').value; // Kategori novel
-    const chapter = document.getElementById('chapter').value; // Chapter novel
+    const category = document.getElementById('category').value.trim();
+    const chapter = document.getElementById('chapter').value.trim();
+    const title = document.getElementById('title').value.trim();
+    const content = document.getElementById('content').value.trim();
 
-    if (!title || !content || !category || !chapter) {
-        Swal.fire('Error', 'All fields (Title, Content, Category, and Chapter) are required.', 'error');
+    if (!category || !chapter || !title || !content) {
+        Swal.fire('Error', 'Category, chapter, title, and content are required.', 'error');
         return;
     }
 
+    // Struktur folder: [Kategori]/[Chapter]
+    const folderPath = `novels/${category}/${chapter}`;
+    const fileName = `${title.replace(/\s+/g, '-').toLowerCase()}.md`;
+
+    // Menyimpan novel ke GitHub dengan struktur folder
     const response = await fetch(`${API_BASE}/save-novel`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, content, category, chapter })
+        body: JSON.stringify({ folderPath, fileName, title, content })
     });
 
     const result = await response.json();
     Swal.fire('Success', result.message, 'success');
-    loadNovels(); // Reload daftar novel
+    loadNovels();
 });
 
 // Load Folder dan File Novel
