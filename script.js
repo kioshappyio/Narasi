@@ -1,4 +1,4 @@
-const API_BASE = 'https://morally-nearby-penguin.ngrok-free.app';
+const API_BASE = 'https://morally-nearby-penguin.ngrok-free.app'; // Ganti dengan URL server Anda
 
 // Menghandle Form Submit untuk upload novel
 document.getElementById('novelForm').addEventListener('submit', async (e) => {
@@ -15,19 +15,23 @@ document.getElementById('novelForm').addEventListener('submit', async (e) => {
     }
 
     // Struktur folder: [Kategori]/[Chapter]
-    const folderPath = `novels/${category}/${chapter}`;
+    const folderPath = `${category.toLowerCase().replace(/\s+/g, '-')}/${chapter}`;
     const fileName = `${title.replace(/\s+/g, '-').toLowerCase()}.md`;
 
     // Menyimpan novel ke GitHub dengan struktur folder
     const response = await fetch(`${API_BASE}/save-novel`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ folderPath, fileName, title, content })
+        body: JSON.stringify({ category, chapter, title, content }) // Sesuaikan data yang dikirim
     });
 
     const result = await response.json();
-    Swal.fire('Success', result.message, 'success');
-    loadNovels();
+    if (response.ok) {
+        Swal.fire('Success', result.message, 'success');
+        loadNovels();  // Memuat ulang daftar novel setelah upload berhasil
+    } else {
+        Swal.fire('Error', result.message || 'Failed to save the novel.', 'error');
+    }
 });
 
 // Load Folder dan File Novel
