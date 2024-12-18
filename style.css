@@ -3,71 +3,31 @@ body {
     background-color: #f4f7f6;
     padding: 40px 15px;
     color: #333;
-    margin: 0;
-    box-sizing: border-box;
 }
 
 h1, h2 {
     font-weight: 600;
-    text-align: center;
+    text-align: center; /* Menambahkan penataan teks tengah untuk judul */
 }
 
 .container {
     max-width: 960px;
     margin: 0 auto;
-    padding: 0 15px;
 }
 
-.header-logo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 40px;
-}
-
-.header-logo img {
-    width: 150px;
-    height: auto;
-    display: block;
-}
-
-/* Chapter List */
 .novel-list {
     margin-top: 40px;
     display: grid;
-    gap: 20px;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    padding: 0 10px;
+    gap: 15px;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 }
 
-/* Folder Item Styling */
-.folder-item {
-    padding: 15px;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-bottom: 10px;
-    font-weight: bold;
-    text-align: center;
-    transition: background-color 0.3s ease;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.folder-item:hover {
-    background-color: #007bff;
-    color: #fff;
-}
-
-/* Novel Item Styling */
 .novel-item {
     padding: 20px;
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
 }
 
 .novel-item:hover {
@@ -81,7 +41,6 @@ h1, h2 {
     font-size: 1.25rem;
     font-weight: 500;
     transition: color 0.3s ease;
-    flex: 1;
 }
 
 .novel-item a:hover {
@@ -89,13 +48,6 @@ h1, h2 {
     text-decoration: underline;
 }
 
-.novel-item .icon {
-    font-size: 1.5rem;
-    color: #007bff;
-    margin-left: 10px;
-}
-
-/* Novel Content Styling */
 .novel-content {
     background-color: #fff;
     border-radius: 10px;
@@ -111,18 +63,10 @@ h1, h2 {
     color: #555;
 }
 
-/* Form Styling */
 .form-control {
-    height: 120px;
+    height: 100px;
     border-radius: 10px;
     width: 100%;
-    padding: 15px;
-    font-size: 1rem;
-}
-
-textarea:focus, input:focus {
-    border-color: #007bff;
-    outline: none;
 }
 
 .btn-custom {
@@ -134,14 +78,12 @@ textarea:focus, input:focus {
     font-size: 1.2rem;
     border-radius: 10px;
     transition: background-color 0.3s;
-    margin-top: 20px;
 }
 
 .btn-custom:hover {
     background-color: #0056b3;
 }
 
-/* Frame Styling */
 .frame {
     border: 1px solid #ddd;
     padding: 20px;
@@ -150,7 +92,6 @@ textarea:focus, input:focus {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Footer Styling */
 .footer {
     background-color: #f1f1f1;
     text-align: center;
@@ -161,18 +102,34 @@ textarea:focus, input:focus {
     color: #777;
 }
 
-/* Responsiveness */
-@media (max-width: 768px) {
-    .novel-list {
-        grid-template-columns: 1fr;
-    }
-
-    .novel-item {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .novel-item a {
-        margin-bottom: 10px;
-    }
+/* Header Logo */
+.header-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 40px;
 }
+
+.header-logo img {
+    width: 150px;
+    height: auto;
+}
+
+/* Tambahkan jarak vertikal untuk form dan daftar */
+.form-control,
+.btn-custom {
+    margin-bottom: 20px;
+}
+
+/* Styling tambahan untuk judul folder dan chapter */
+h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+}
+
+h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    }
