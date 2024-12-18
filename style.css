@@ -14,6 +14,34 @@ h1, h2 {
     margin: 0 auto;
 }
 
+.header-logo img {
+    width: 150px;
+    height: auto;
+}
+
+/* Breadcrumb Styling */
+.breadcrumb {
+    background: transparent;
+    margin-bottom: 20px;
+    padding: 0;
+    list-style: none;
+}
+
+.breadcrumb li {
+    display: inline;
+    margin-right: 5px;
+    font-size: 1rem;
+}
+
+.breadcrumb li::after {
+    content: '>';
+    margin-left: 5px;
+}
+
+.breadcrumb li:last-child::after {
+    content: '';
+}
+
 .novel-list {
     margin-top: 40px;
     display: grid;
@@ -106,9 +134,4 @@ h1, h2 {
     align-items: center;
     justify-content: center;
     margin-bottom: 40px;
-}
-
-.header-logo img {
-    width: 150px;
-    height: auto;
-}
+    }
