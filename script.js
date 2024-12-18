@@ -6,21 +6,23 @@ document.getElementById('novelForm').addEventListener('submit', async (e) => {
 
     const title = document.getElementById('title').value;
     const content = document.getElementById('content').value;
+    const category = document.getElementById('category').value; // Kategori novel
+    const chapter = document.getElementById('chapter').value; // Chapter novel
 
-    if (!title || !content) {
-        Swal.fire('Error', 'Title and content are required.', 'error');
+    if (!title || !content || !category || !chapter) {
+        Swal.fire('Error', 'All fields (Title, Content, Category, and Chapter) are required.', 'error');
         return;
     }
 
     const response = await fetch(`${API_BASE}/save-novel`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, content })
+        body: JSON.stringify({ title, content, category, chapter })
     });
 
     const result = await response.json();
     Swal.fire('Success', result.message, 'success');
-    loadNovels();
+    loadNovels(); // Reload daftar novel
 });
 
 // Load Folder dan File Novel
