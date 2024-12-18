@@ -7,7 +7,6 @@ body {
 
 h1, h2 {
     font-weight: 600;
-    color: #333;
 }
 
 .container {
@@ -22,30 +21,16 @@ h1, h2 {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 }
 
-.folder-item {
-    padding: 20px;
-    background-color: #f8f9fa;
-    border-radius: 10px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-    font-weight: 600;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    cursor: pointer;
-}
-
-.folder-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
-
-.novel-item {
+.novel-item, .folder-item {
     padding: 20px;
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
 }
 
-.novel-item:hover {
+.novel-item:hover, .folder-item:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
@@ -61,6 +46,18 @@ h1, h2 {
 .novel-item a:hover {
     color: #0056b3;
     text-decoration: underline;
+}
+
+.folder-item {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #007bff;
+    text-align: center;
+    transition: color 0.3s ease;
+}
+
+.folder-item:hover {
+    color: #0056b3;
 }
 
 .novel-content {
@@ -139,12 +136,12 @@ select.form-control {
 }
 
 /* Styling for the form elements (category and chapter) */
-select.form-control, input[type="number"].form-control {
+select.form-control, input[type="text"].form-control {
     border: 2px solid #ccc;
     padding: 10px;
 }
 
-select.form-control:focus, input[type="number"].form-control:focus {
+select.form-control:focus, input[type="text"].form-control:focus {
     border-color: #007bff;
     outline: none;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
@@ -164,37 +161,29 @@ form {
     margin-bottom: 40px;
 }
 
-/* Additional styling for better responsiveness */
-@media (max-width: 768px) {
-    .container {
-        padding: 20px;
-    }
-
-    .novel-list {
-        grid-template-columns: 1fr;
-    }
-
-    .header-logo img {
-        width: 120px;
-    }
-
-    .footer {
-        font-size: 0.8rem;
-    }
+/* New category and chapter input styles */
+input[type="text"] {
+    font-size: 1rem;
 }
 
-@media (max-width: 480px) {
-    .novel-list {
-        grid-template-columns: 1fr;
-    }
+#category, #chapter {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #333;
+    border: 1px solid #ccc;
+}
 
-    .novel-item, .folder-item {
-        font-size: 0.9rem;
-        padding: 15px;
-    }
+#category:focus, #chapter:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
 
-    .btn-custom {
-        font-size: 1rem;
-        padding: 12px;
+#novelList {
+    margin-top: 40px;
+}
+
+.novel-list .folder-item,
+.novel-list .novel-item {
+    margin-bottom: 20px;
     }
-        }
