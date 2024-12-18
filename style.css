@@ -19,29 +19,7 @@ h1, h2 {
     height: auto;
 }
 
-/* Breadcrumb Styling */
-.breadcrumb {
-    background: transparent;
-    margin-bottom: 20px;
-    padding: 0;
-    list-style: none;
-}
-
-.breadcrumb li {
-    display: inline;
-    margin-right: 5px;
-    font-size: 1rem;
-}
-
-.breadcrumb li::after {
-    content: '>';
-    margin-left: 5px;
-}
-
-.breadcrumb li:last-child::after {
-    content: '';
-}
-
+/* Chapter List */
 .novel-list {
     margin-top: 40px;
     display: grid;
@@ -128,10 +106,3 @@ h1, h2 {
     font-size: 0.9rem;
     color: #777;
 }
-
-.header-logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 40px;
-    }
