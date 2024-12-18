@@ -27,33 +27,18 @@
     <h1 class="text-center mb-4">Publish Novel Karya Kamu Secara Gratis Di Narasi Novels</h1>
 
     <form id="novelForm">
-        <!-- Input Judul Novel -->
         <div class="mb-4">
-            <input type="text" id="title" class="form-control" placeholder="Contoh: Hari Ini Chapter1" required />
+            <input type="text" id="category" class="form-control" placeholder="Masukkan kategori (contoh: Hantu Pohon Pisang)" required />
         </div>
-
-        <!-- Input Kategori Novel -->
         <div class="mb-4">
-            <select id="category" class="form-control" required>
-                <option value="">Pilih Kategori</option>
-                <option value="Romantis">Romantis</option>
-                <option value="Petualangan">Petualangan</option>
-                <option value="Fiksi Ilmiah">Fiksi Ilmiah</option>
-                <option value="Horor">Horor</option>
-                <!-- Tambahkan kategori lain sesuai kebutuhan -->
-            </select>
+            <input type="text" id="chapter" class="form-control" placeholder="Masukkan Chapter (contoh: Chapter#1)" required />
         </div>
-
-        <!-- Input Chapter Novel -->
         <div class="mb-4">
-            <input type="number" id="chapter" class="form-control" placeholder="Nomor Chapter" required min="1" />
+            <input type="text" id="title" class="form-control" placeholder="Contoh: Judul Novel - Chapter 1" required />
         </div>
-
-        <!-- Input Konten Novel -->
         <div class="mb-4">
-            <textarea id="content" class="form-control" rows="5" placeholder="Masukan judul di paragraf pertama, lalu masukan isi novel." required></textarea>
+            <textarea id="content" class="form-control" rows="5" placeholder="Masukkan isi novel, dengan judul di paragraf pertama." required></textarea>
         </div>
-
         <button type="submit" class="btn-custom" id="publishButton">Upload Novel</button>
     </form>
 
@@ -70,4 +55,4 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.15/dist/sweetalert2.all.min.js"></script>
 
 </body>
-        </html>
+</html>
