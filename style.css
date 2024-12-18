@@ -45,9 +45,9 @@ h1, h2 {
     transition: color 0.3s ease;
     display: block; /* Membuat link menjadi block supaya dapat menangani scroll */
     max-width: 100%; /* Batas lebar maksimal */
-    overflow: hidden; /* Menyembunyikan teks yang melampaui lebar */
-    text-overflow: ellipsis; /* Menambah elipsis di akhir jika terlalu panjang */
-    white-space: nowrap; /* Menghindari teks membungkus ke baris berikutnya */
+    white-space: normal; /* Mengizinkan teks terbungkus */
+    word-wrap: break-word; /* Memecah kata jika terlalu panjang */
+    word-break: break-word; /* Memecah kata untuk menghindari overflow */
 }
 
 .novel-item a:hover {
@@ -201,5 +201,5 @@ input[type="text"] {
     max-width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
-}
+    white-space: normal; /* Membolehkan teks untuk terbungkus */
+    }
