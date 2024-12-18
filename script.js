@@ -1,5 +1,8 @@
 const API_BASE = 'https://morally-nearby-penguin.ngrok-free.app';
 
+// Breadcrumb Navigation
+let currentPath = '';
+
 document.getElementById('novelForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -19,7 +22,7 @@ document.getElementById('novelForm').addEventListener('submit', async (e) => {
 
     const result = await response.json();
     Swal.fire('Success', result.message, 'success');
-    loadNovels();
+    loadNovels(currentPath); // Reload current folder
 });
 
 async function loadNovels(path = '') {
@@ -31,20 +34,24 @@ async function loadNovels(path = '') {
     const novelList = document.getElementById('novelList');
     novelList.innerHTML = '';
 
+    // Tambahkan breadcrumb
+    updateBreadcrumb(path);
+
     data.forEach(item => {
         if (item.type === 'dir') {
-            // Jika item adalah folder, tampilkan sebagai kategori
+            // Folder sebagai kategori
             const folderDiv = document.createElement('div');
             folderDiv.classList.add('folder-item');
-            folderDiv.textContent = item.name;
+            folderDiv.innerHTML = `<strong>[Folder]</strong> ${item.name}`;
 
             folderDiv.addEventListener('click', () => {
-                loadNovels(`${path}${item.name}/`); // Buka folder
+                currentPath = `${path}${item.name}/`;
+                loadNovels(currentPath); // Masuk ke folder
             });
 
             novelList.appendChild(folderDiv);
         } else if (item.name.endsWith('.md')) {
-            // Jika item adalah file markdown, tampilkan sebagai daftar
+            // File markdown
             const title = item.name.replace('.md', '').replace(/-/g, ' ');
             const link = document.createElement('a');
             link.href = "#";
@@ -52,11 +59,12 @@ async function loadNovels(path = '') {
             link.classList.add('novel-item');
 
             link.addEventListener('click', () => {
-                loadNovelContent(`${path}${item.name}`); // Load isi file
+                loadNovelContent(`${path}${item.name}`); // Tampilkan isi file
             });
 
             const div = document.createElement('div');
             div.classList.add('novel-item');
+            div.innerHTML = `<strong>[File]</strong> `;
             div.appendChild(link);
             novelList.appendChild(div);
         }
@@ -76,6 +84,42 @@ async function loadNovelContent(filePath) {
         confirmButtonText: 'Close',
         width: '80%',
         heightAuto: true,
+    });
+}
+
+function updateBreadcrumb(path) {
+    const breadcrumbContainer = document.getElementById('breadcrumb');
+    breadcrumbContainer.innerHTML = '';
+
+    const segments = path.split('/').filter(Boolean);
+    let cumulativePath = '';
+
+    const homeLink = document.createElement('span');
+    homeLink.textContent = 'Home';
+    homeLink.classList.add('breadcrumb-item');
+    homeLink.addEventListener('click', () => {
+        currentPath = '';
+        loadNovels();
+    });
+
+    breadcrumbContainer.appendChild(homeLink);
+
+    segments.forEach((segment, index) => {
+        cumulativePath += `${segment}/`;
+
+        const separator = document.createTextNode(' > ');
+        breadcrumbContainer.appendChild(separator);
+
+        const breadcrumbItem = document.createElement('span');
+        breadcrumbItem.textContent = segment;
+        breadcrumbItem.classList.add('breadcrumb-item');
+
+        breadcrumbItem.addEventListener('click', () => {
+            currentPath = segments.slice(0, index + 1).join('/') + '/';
+            loadNovels(currentPath);
+        });
+
+        breadcrumbContainer.appendChild(breadcrumbItem);
     });
 }
 
