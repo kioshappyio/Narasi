@@ -18,11 +18,17 @@ h1, h2 {
     padding: 0 15px;
 }
 
+.header-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
 .header-logo img {
     width: 150px;
     height: auto;
     display: block;
-    margin: 0 auto;
 }
 
 /* Chapter List */
