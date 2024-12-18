@@ -7,6 +7,7 @@ body {
 
 h1, h2 {
     font-weight: 600;
+    color: #333;
 }
 
 .container {
@@ -19,6 +20,21 @@ h1, h2 {
     display: grid;
     gap: 15px;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+
+.folder-item {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    font-weight: 600;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.folder-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .novel-item {
@@ -147,3 +163,38 @@ form {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
     margin-bottom: 40px;
 }
+
+/* Additional styling for better responsiveness */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+
+    .novel-list {
+        grid-template-columns: 1fr;
+    }
+
+    .header-logo img {
+        width: 120px;
+    }
+
+    .footer {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .novel-list {
+        grid-template-columns: 1fr;
+    }
+
+    .novel-item, .folder-item {
+        font-size: 0.9rem;
+        padding: 15px;
+    }
+
+    .btn-custom {
+        font-size: 1rem;
+        padding: 12px;
+    }
+        }
