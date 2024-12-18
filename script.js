@@ -22,38 +22,54 @@ document.getElementById('novelForm').addEventListener('submit', async (e) => {
     loadNovels();
 });
 
-async function loadNovels() {
-    const url = 'https://api.github.com/repos/kioshappyio/Narasi/contents/';
+async function loadNovels(path = '') {
+    const baseUrl = 'https://api.github.com/repos/kioshappyio/Narasi/contents/';
+    const url = `${baseUrl}${path}`;
     const response = await fetch(url);
     const data = await response.json();
 
-    document.getElementById('novelList').innerHTML = '';
-    data.forEach(file => {
-        if (file.name.endsWith('.md')) {
-            const title = file.name.replace('.md', '').replace(/-/g, ' ');
+    const novelList = document.getElementById('novelList');
+    novelList.innerHTML = '';
+
+    data.forEach(item => {
+        if (item.type === 'dir') {
+            // Jika item adalah folder, tampilkan sebagai kategori
+            const folderDiv = document.createElement('div');
+            folderDiv.classList.add('folder-item');
+            folderDiv.textContent = item.name;
+
+            folderDiv.addEventListener('click', () => {
+                loadNovels(`${path}${item.name}/`); // Buka folder
+            });
+
+            novelList.appendChild(folderDiv);
+        } else if (item.name.endsWith('.md')) {
+            // Jika item adalah file markdown, tampilkan sebagai daftar
+            const title = item.name.replace('.md', '').replace(/-/g, ' ');
             const link = document.createElement('a');
             link.href = "#";
             link.textContent = title;
             link.classList.add('novel-item');
-            link.addEventListener('click', function () {
-                loadNovelContent(file.name);
+
+            link.addEventListener('click', () => {
+                loadNovelContent(`${path}${item.name}`); // Load isi file
             });
+
             const div = document.createElement('div');
             div.classList.add('novel-item');
             div.appendChild(link);
-            document.getElementById('novelList').appendChild(div);
+            novelList.appendChild(div);
         }
     });
 }
 
-async function loadNovelContent(fileName) {
-    const url = `https://api.github.com/repos/kioshappyio/Narasi/contents/${fileName}`;
+async function loadNovelContent(filePath) {
+    const url = `https://api.github.com/repos/kioshappyio/Narasi/contents/${filePath}`;
     const response = await fetch(url);
     const data = await response.json();
     const content = atob(data.content);
     const [title, ...body] = content.split('\n');
 
-    // Menampilkan isi novel dalam popup dengan judul yang jelas dan isi cerita terpisah
     Swal.fire({
         title: `<strong>${title.replace('# ', '')}</strong>`,
         html: `<div style="font-size: 0.9rem; line-height: 1.6; font-weight: normal;">${body.join('<br>')}</div>`,
@@ -63,4 +79,5 @@ async function loadNovelContent(fileName) {
     });
 }
 
+// Mulai dengan root folder
 loadNovels();
