@@ -35,7 +35,7 @@ document.getElementById('novelForm').addEventListener('submit', async (e) => {
 });
 
 // Load Folder dan File Novel
-async function loadNovels(path = '', breadcrumbPath = '') {
+async function loadNovels(path = '', breadcrumbPath = 'Home') {
     const baseUrl = 'https://api.github.com/repos/kioshappyio/Narasi/contents/';
     const url = `${baseUrl}${path}`;
     const response = await fetch(url);
@@ -53,10 +53,12 @@ async function loadNovels(path = '', breadcrumbPath = '') {
     // Memperbarui breadcrumb
     const breadcrumbItems = breadcrumbPath.split('/').filter(item => item);
     breadcrumb.innerHTML = '<a href="/">Home</a>';
-    breadcrumbItems.forEach(item => {
-        breadcrumb.innerHTML += ` > <a href="#" onclick="loadNovels('${breadcrumbItems.join('/') + '/' + item}', '${breadcrumbItems.join('/') + '/' + item}')">${item}</a>`;
+    breadcrumbItems.forEach((item, index) => {
+        const currentPath = breadcrumbItems.slice(0, index + 1).join('/');
+        breadcrumb.innerHTML += ` > <a href="javascript:void(0);" onclick="loadNovels('${currentPath}/', '${currentPath}')">${item}</a>`;
     });
 
+    // Memuat novel atau folder
     data.forEach(item => {
         if (item.type === 'dir') {
             // Folder: tampilkan sebagai kategori
@@ -66,7 +68,7 @@ async function loadNovels(path = '', breadcrumbPath = '') {
 
             // Ketika folder diklik, load isi folder
             folderDiv.addEventListener('click', () => {
-                loadNovels(`${path}${item.name}/`, breadcrumbPath + '/' + item.name);
+                loadNovels(`${path}${item.name}/`, `${breadcrumbPath}/${item.name}`);
             });
 
             novelList.appendChild(folderDiv);
