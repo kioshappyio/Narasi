@@ -35,19 +35,27 @@ document.getElementById('novelForm').addEventListener('submit', async (e) => {
 });
 
 // Load Folder dan File Novel
-async function loadNovels(path = '') {
+async function loadNovels(path = '', breadcrumbPath = '') {
     const baseUrl = 'https://api.github.com/repos/kioshappyio/Narasi/contents/';
     const url = `${baseUrl}${path}`;
     const response = await fetch(url);
     const data = await response.json();
 
     const novelList = document.getElementById('novelList');
+    const breadcrumb = document.getElementById('breadcrumb');
     novelList.innerHTML = '';
 
     if (!data || data.length === 0) {
         novelList.innerHTML = 'No novels found.';
         return;
     }
+
+    // Memperbarui breadcrumb
+    const breadcrumbItems = breadcrumbPath.split('/').filter(item => item);
+    breadcrumb.innerHTML = '<a href="/">Home</a>';
+    breadcrumbItems.forEach(item => {
+        breadcrumb.innerHTML += ` > <a href="#" onclick="loadNovels('${breadcrumbItems.join('/') + '/' + item}', '${breadcrumbItems.join('/') + '/' + item}')">${item}</a>`;
+    });
 
     data.forEach(item => {
         if (item.type === 'dir') {
@@ -58,7 +66,7 @@ async function loadNovels(path = '') {
 
             // Ketika folder diklik, load isi folder
             folderDiv.addEventListener('click', () => {
-                loadNovels(`${path}${item.name}/`);
+                loadNovels(`${path}${item.name}/`, breadcrumbPath + '/' + item.name);
             });
 
             novelList.appendChild(folderDiv);
@@ -102,5 +110,5 @@ async function loadNovelContent(filePath) {
 
 // Memulai dengan folder root
 window.onload = () => {
-    loadNovels();
+    loadNovels('', 'Home');
 };
