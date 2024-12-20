@@ -203,3 +203,57 @@ input[type="text"] {
     text-overflow: ellipsis;
     white-space: normal; /* Membolehkan teks untuk terbungkus */
     }
+/* Breadcrumb Styling */
+.breadcrumb {
+    display: flex;
+    list-style: none;
+    padding: 10px 15px;
+    margin: 20px 0;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-size: 1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.breadcrumb:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.breadcrumb-item {
+    color: #007bff;
+    font-weight: 500;
+}
+
+.breadcrumb-item a {
+    text-decoration: none;
+    color: #007bff;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.breadcrumb-item a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+.breadcrumb-item a::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: #007bff;
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+    transform-origin: left;
+}
+
+.breadcrumb-item a:hover::after {
+    transform: scaleX(1);
+}
+
+.breadcrumb-item.active {
+    color: #555;
+    pointer-events: none;
+}
